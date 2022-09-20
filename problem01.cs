@@ -63,7 +63,6 @@ namespace Problem01
         {
             int start = Convert.ToInt32(threadIndex * step);
             int stop = Convert.ToInt32((threadIndex + 1) * step);
-            // Console.WriteLine("{0} {1} {2}", threadIndex, start, stop);
             for (int i = start; i < stop; i++)
             {
                 sum(threadIndex, i);
@@ -98,7 +97,7 @@ namespace Problem01
             }
 
             /* Start */
-            Console.Write("\n\nWorking...\n");
+            Console.Write("\n\nWorking...");
             sw.Start();
             for (int i = 0; i < threadSize; i++)
             {
