@@ -9,8 +9,11 @@ namespace Problem01
 {
     class Program
     {
-        static byte[] Data_Global = new byte[1000000000];
-        static long[] Sum_Global = new long[12];
+        const int dataSize = 1000000000;
+        const int threadSize = 12;
+        static byte[] Data_Global = new byte[dataSize];
+        static long Sum_Global = 0;
+        static long[] Pre_Sum_Global = new long[12];
         static int G_index = 0;
 
         static int ReadData()
@@ -39,21 +42,30 @@ namespace Problem01
         {
             if (Data_Global[index] % 2 == 0)
             {
-                Sum_Global[threadIndex] -= Data_Global[index];
+                Pre_Sum_Global[threadIndex] -= Data_Global[index];
             }
             else if (Data_Global[index] % 3 == 0)
             {
-                Sum_Global[threadIndex] += (Data_Global[index]*2);
+                Pre_Sum_Global[threadIndex] += (Data_Global[index]*2);
             }
             else if (Data_Global[index] % 5 == 0)
             {
-                Sum_Global[threadIndex] += (Data_Global[index] / 2);
+                Pre_Sum_Global[threadIndex] += (Data_Global[index] / 2);
             }
             else if (Data_Global[index] %7 == 0)
             {
-                Sum_Global[threadIndex] += (Data_Global[index] / 3);
+                Pre_Sum_Global[threadIndex] += (Data_Global[index] / 3);
             }
             Data_Global[index] = 0;
+        }
+        static void TestThread(int threadIndex)  
+        {
+            int start = threadIndex * (dataSize/threadSize);
+            int stop = (threadIndex + 1) * (dataSize/threadSize);
+            for (int i = start; i < stop; i++)
+            {
+                sum(threadIndex, i);
+            }
         }
         static void Thread1()  
         {
@@ -156,9 +168,9 @@ namespace Problem01
             Thread th11 = new Thread(Thread11);
             Thread th12 = new Thread(Thread12);
 
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < threadSize; i++)
             {
-                Sum_Global[i] =  0;
+                Pre_Sum_Global[i] =  0;
             }
 
             /* Read data from file */
@@ -200,11 +212,12 @@ namespace Problem01
             th10.Join();
             th11.Join();
             th12.Join();
+            Sum_Global = Pre_Sum_Global.Sum();
             sw.Stop();
             Console.WriteLine("Done.");
 
             /* Result */
-            Console.WriteLine("Summation result: {0}", Sum_Global.Sum());
+            Console.WriteLine("Summation result: {0}", Sum_Global);
             Console.WriteLine("Time used: " + sw.ElapsedMilliseconds.ToString() + "ms");
         }
     }
