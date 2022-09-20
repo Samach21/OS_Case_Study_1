@@ -1,16 +1,13 @@
-using System;
 using System.Diagnostics;
-using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Threading;
 
 namespace Problem01
 {
     class Program
     {
         const int dataSize = 1000000000;
-        const int threadSize = 10;
+        const int threadSize = 100;
         const double step = dataSize/threadSize;
         static byte[] Data_Global = new byte[dataSize];
         static long Sum_Global = 0;
@@ -47,13 +44,13 @@ namespace Problem01
             }
             else if (Data_Global[index] % 3 == 0)
             {
-                Pre_Sum_Global[threadIndex] += (Data_Global[index]*2);
+                Pre_Sum_Global[threadIndex] += (Data_Global[index] * 2);
             }
             else if (Data_Global[index] % 5 == 0)
             {
                 Pre_Sum_Global[threadIndex] += (Data_Global[index] / 2);
             }
-            else if (Data_Global[index] %7 == 0)
+            else if (Data_Global[index] % 7 == 0)
             {
                 Pre_Sum_Global[threadIndex] += (Data_Global[index] / 3);
             }
