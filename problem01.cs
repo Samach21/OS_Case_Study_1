@@ -10,7 +10,8 @@ namespace Problem01
     class Program
     {
         const int dataSize = 1000000000;
-        const int threadSize = 12;
+        const int threadSize = 10;
+        const double step = dataSize/threadSize;
         static byte[] Data_Global = new byte[dataSize];
         static long Sum_Global = 0;
         static long[] Pre_Sum_Global = new long[threadSize];
@@ -60,9 +61,8 @@ namespace Problem01
         }
         static void TestThread(int threadIndex)  
         {
-            double step = dataSize/threadSize;
             int start = Convert.ToInt32(threadIndex * step);
-            int stop = Convert.ToInt32((threadIndex + 1.0d) * step);
+            int stop = Convert.ToInt32((threadIndex + 1) * step);
             // Console.WriteLine("{0} {1} {2}", threadIndex, start, stop);
             for (int i = start; i < stop; i++)
             {
