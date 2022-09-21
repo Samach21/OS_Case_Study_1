@@ -60,6 +60,10 @@ namespace Problem01
         {
             int start = Convert.ToInt32(threadIndex * step);
             int stop = Convert.ToInt32((threadIndex + 1) * step);
+            if (threadIndex == threadSize - 1)
+            {
+                stop = dataSize;
+            }
             for (int i = start; i < stop; i++)
             {
                 sum(threadIndex, i);
