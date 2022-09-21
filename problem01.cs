@@ -65,25 +65,26 @@ namespace Problem01
                 stop = dataSize;
             }
             int sum = 0;
+            Span<byte> data = Data_Global;
             for (int i = start; i < stop; i++)
             {
-                if (Data_Global[i] % 2 == 0)
+                if (data[i] % 2 == 0)
                 {
-                    sum -= Data_Global[i];
+                    sum -= data[i];
                 }
-                else if (Data_Global[i] % 3 == 0)
+                else if (data[i] % 3 == 0)
                 {
-                    sum += (Data_Global[i] * 2);
+                    sum += (data[i] * 2);
                 }
-                else if (Data_Global[i] % 5 == 0)
+                else if (data[i] % 5 == 0)
                 {
-                    sum += (Data_Global[i] / 2);
+                    sum += (data[i] / 2);
                 }
-                else if (Data_Global[i] % 7 == 0)
+                else if (data[i] % 7 == 0)
                 {
-                    sum += (Data_Global[i] / 3);
+                    sum += (data[i] / 3);
                 }
-                Data_Global[i] = 0;
+                data[i] = 0;
             }
             Sum_Global += sum;
         }
@@ -121,7 +122,6 @@ namespace Problem01
             for (int i = 0; i < threadSize; i++)
             {
                 th[i].Start();
-                
             }
             for (int i = 0; i < threadSize; i++)
             {
