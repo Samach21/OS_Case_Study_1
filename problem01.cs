@@ -7,7 +7,7 @@ namespace Problem01
     class Program
     {
         const int dataSize = 1000000000;
-        const int threadSize = 100;
+        const int threadSize = 12;
         const double step = dataSize/threadSize;
         static byte[] Data_Global = new byte[dataSize];
         static long Sum_Global = 0;
@@ -36,26 +36,26 @@ namespace Problem01
 
             return returnData;
         }
-        static void sum(int threadIndex, int index)
-        {
-            if (Data_Global[index] % 2 == 0)
-            {
-                Pre_Sum_Global[threadIndex] -= Data_Global[index];
-            }
-            else if (Data_Global[index] % 3 == 0)
-            {
-                Pre_Sum_Global[threadIndex] += (Data_Global[index] * 2);
-            }
-            else if (Data_Global[index] % 5 == 0)
-            {
-                Pre_Sum_Global[threadIndex] += (Data_Global[index] / 2);
-            }
-            else if (Data_Global[index] % 7 == 0)
-            {
-                Pre_Sum_Global[threadIndex] += (Data_Global[index] / 3);
-            }
-            Data_Global[index] = 0;
-        }
+        // static void sum(int threadIndex, int index)
+        // {
+        //     if (Data_Global[index] % 2 == 0)
+        //     {
+        //         Pre_Sum_Global[threadIndex] -= Data_Global[index];
+        //     }
+        //     else if (Data_Global[index] % 3 == 0)
+        //     {
+        //         Pre_Sum_Global[threadIndex] += (Data_Global[index] * 2);
+        //     }
+        //     else if (Data_Global[index] % 5 == 0)
+        //     {
+        //         Pre_Sum_Global[threadIndex] += (Data_Global[index] / 2);
+        //     }
+        //     else if (Data_Global[index] % 7 == 0)
+        //     {
+        //         Pre_Sum_Global[threadIndex] += (Data_Global[index] / 3);
+        //     }
+        //     Data_Global[index] = 0;
+        // }
         static void TestThread(int threadIndex)  
         {
             int start = Convert.ToInt32(threadIndex * step);
@@ -64,10 +64,28 @@ namespace Problem01
             {
                 stop = dataSize;
             }
+            int sum = 0;
             for (int i = start; i < stop; i++)
             {
-                sum(threadIndex, i);
+                if (Data_Global[i] % 2 == 0)
+                {
+                    sum -= Data_Global[i];
+                }
+                else if (Data_Global[i] % 3 == 0)
+                {
+                    sum += (Data_Global[i] * 2);
+                }
+                else if (Data_Global[i] % 5 == 0)
+                {
+                    sum += (Data_Global[i] / 2);
+                }
+                else if (Data_Global[i] % 7 == 0)
+                {
+                    sum += (Data_Global[i] / 3);
+                }
+                Data_Global[i] = 0;
             }
+            Sum_Global += sum;
         }
         static void Main(string[] args)
         {
@@ -103,12 +121,13 @@ namespace Problem01
             for (int i = 0; i < threadSize; i++)
             {
                 th[i].Start();
+                
             }
             for (int i = 0; i < threadSize; i++)
             {
                 th[i].Join();
             }
-            Sum_Global = Pre_Sum_Global.Sum();
+            // Sum_Global = Pre_Sum_Global.Sum();
             sw.Stop();
             Console.WriteLine("Done.");
 
