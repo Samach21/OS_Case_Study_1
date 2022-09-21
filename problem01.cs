@@ -8,11 +8,9 @@ namespace Problem01
     {
         const int dataSize = 1000000000;
         const int threadSize = 12;
-        const double step = dataSize/threadSize;
+        const double step = dataSize / threadSize;
         static byte[] Data_Global = new byte[dataSize];
         static long Sum_Global = 0;
-        static long[] Pre_Sum_Global = new long[threadSize];
-        static int G_index = 0;
 
         static int ReadData()
         {
@@ -36,26 +34,6 @@ namespace Problem01
 
             return returnData;
         }
-        // static void sum(int threadIndex, int index)
-        // {
-        //     if (Data_Global[index] % 2 == 0)
-        //     {
-        //         Pre_Sum_Global[threadIndex] -= Data_Global[index];
-        //     }
-        //     else if (Data_Global[index] % 3 == 0)
-        //     {
-        //         Pre_Sum_Global[threadIndex] += (Data_Global[index] * 2);
-        //     }
-        //     else if (Data_Global[index] % 5 == 0)
-        //     {
-        //         Pre_Sum_Global[threadIndex] += (Data_Global[index] / 2);
-        //     }
-        //     else if (Data_Global[index] % 7 == 0)
-        //     {
-        //         Pre_Sum_Global[threadIndex] += (Data_Global[index] / 3);
-        //     }
-        //     Data_Global[index] = 0;
-        // }
         static void TestThread(int threadIndex)  
         {
             int start = Convert.ToInt32(threadIndex * step);
@@ -64,7 +42,7 @@ namespace Problem01
             {
                 stop = dataSize;
             }
-            long sum = 0;
+            long sum = 0 ;
             Span<byte> data = Data_Global;
             for (int i = start; i < stop; i++)
             {
@@ -92,18 +70,6 @@ namespace Problem01
             Stopwatch sw = new Stopwatch();
             int y;
             Thread[] th = new Thread[threadSize];
-            
-            for (int i = 0; i < threadSize; i++)
-            {
-                int localNum = i;
-                th[i] = new Thread(() => TestThread(localNum));
-                th[i].Priority = ThreadPriority.Highest;
-            }
-
-            for (int i = 0; i < threadSize; i++)
-            {
-                Pre_Sum_Global[i] =  0;
-            }
 
             /* Read data from file */
             Console.Write("Data read...");
@@ -120,6 +86,12 @@ namespace Problem01
             /* Start */
             Console.Write("\n\nWorking...");
             sw.Start();
+            for (int i = 0; i < threadSize; i++)
+            {
+                int localNum = i;
+                th[i] = new Thread(() => TestThread(localNum));
+                th[i].Priority = ThreadPriority.Highest;
+            }
             for (int i = 0; i < threadSize; i++)
             {
                 th[i].Start();
