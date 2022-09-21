@@ -64,7 +64,7 @@ namespace Problem01
             {
                 stop = dataSize;
             }
-            int sum = 0;
+            long sum = 0;
             Span<byte> data = Data_Global;
             for (int i = start; i < stop; i++)
             {
@@ -84,7 +84,6 @@ namespace Problem01
                 {
                     sum += (data[i] / 3);
                 }
-                data[i] = 0;
             }
             Sum_Global += sum;
         }
@@ -93,10 +92,12 @@ namespace Problem01
             Stopwatch sw = new Stopwatch();
             int y;
             Thread[] th = new Thread[threadSize];
+            
             for (int i = 0; i < threadSize; i++)
             {
                 int localNum = i;
-                th[i] = new Thread(()=>TestThread(localNum));
+                th[i] = new Thread(() => TestThread(localNum));
+                th[i].Priority = ThreadPriority.Highest;
             }
 
             for (int i = 0; i < threadSize; i++)
